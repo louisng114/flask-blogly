@@ -9,7 +9,11 @@
         <input type="text" name="title" value="{{post.title}}" requierd><br>
         <label for="content">Content: </label><br>
         <input type="text" name="content" value="{{post.content}}" required><br>
-        <button>Edit</button>
+        {% for tag in tags %}
+        <input type="checkbox" name="{{tag.id}}" {% if tag in post.tags %}checked{% endif %}>
+        <label for="{{tag.id}}">{{tag.name}}</label><br>
+        {% endfor %} <br>
+        <button>Edit</button><br>
     </form>
     <a href="/">Back to home</a>
 {% endblock %}

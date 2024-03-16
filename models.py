@@ -10,7 +10,7 @@ def connect_db(app):
     db.init_app(app)
 
 class User(db.Model):
-    """Models for Blogly."""
+    """User model for Blogly."""
 
     __tablename__ = "users"
 
@@ -26,7 +26,7 @@ class User(db.Model):
         return self.first_name + " " + self.last_name if self.last_name is not None else self.first_name
 
 class Post(db.Model):
-    """Models for Blogly."""
+    """Post model for Blogly."""
 
     __tablename__ = "posts"
 
@@ -39,3 +39,23 @@ class Post(db.Model):
     user = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     poster = db.relationship("User", backref="posts")
+
+    tags = db.relationship("Tag", secondary="posttags", backref="posts")
+
+class Tag(db.Model):
+    """Tag model for Blogly"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer,
+            primary_key=True,
+            autoincrement=True)
+    name = db.Column(db.String, unique=True)
+
+class PostTag(db.Model):
+    """Through for Post and Tag"""
+
+    __tablename__ = "posttags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
